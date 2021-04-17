@@ -1,26 +1,28 @@
-
 export const OFFSET_CANVAS_X: number = 40;
 export const OFFSET_CANVAS_Y: number = 50;
 
 export const CANVAS_W: number = 400;
 export const CANVAS_H: number = 400;
 
-export function createCanvas2DContext(id: string, topLeftX: number, topLeftY: number, w: number = CANVAS_W, h:number = CANVAS_H): CanvasRenderingContext2D{
+export function createCanvas2DContext(
+  id: string,
+  topLeftX: number,
+  topLeftY: number,
+  w: number = CANVAS_W,
+  h: number = CANVAS_H
+): CanvasRenderingContext2D {
+  const canvas: HTMLCanvasElement = document.createElement("canvas");
 
-    const canvas: HTMLCanvasElement = document.createElement("canvas");
+  canvas.id = id;
+  canvas.width = w;
+  canvas.height = h;
+  const style = `position: absolute;left: ${topLeftX}px; top: ${topLeftY}px;`;
+  canvas.setAttribute("style", style);
 
-    canvas.id = id;
-    canvas.width = w;
-    canvas.height = h;
-    const style = `position: absolute;left: ${topLeftX}px; top: ${topLeftY}px;` 
-    canvas.setAttribute("style", style);
+  document.body.appendChild(canvas);
 
-    document.body.appendChild(canvas);
-
-    return canvas.getContext("2d") as CanvasRenderingContext2D;
-
+  return canvas.getContext("2d") as CanvasRenderingContext2D;
 }
-
 
 export function drawRect(
   ctx: CanvasRenderingContext2D,
@@ -48,18 +50,23 @@ export function drawStickFigure(ctx: CanvasRenderingContext2D) {
   ctx.restore();
 }
 
-
-export function drawText(ctx: CanvasRenderingContext2D, msg: string, x: number, y: number) {
-    ctx.save();
-    ctx.fillText(msg, x, y);
-    ctx.restore();
+export function drawText(
+  ctx: CanvasRenderingContext2D,
+  msg: string,
+  x: number,
+  y: number
+) {
+  ctx.save();
+  ctx.fillText(msg, x, y);
+  ctx.restore();
 }
 
 export enum COLOR {
-    DIM_GREY = "dimgrey",
-    LIGHTGREY = "lightgrey",
-    WHITE = "white",
-    BLACK = "black",
-    RED = "red",
-    GHOST_WHITE = "GhostWhite"
-  }
+  DIM_GREY = "dimgrey",
+  LIGHTGREY = "lightgrey",
+  WHITE = "white",
+  BLACK = "black",
+  RED = "red",
+  GHOST_WHITE = "GhostWhite",
+  GREEN = "green",
+}
