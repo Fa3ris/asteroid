@@ -75,9 +75,34 @@ const ctx2: CanvasRenderingContext2D = createCanvas2DContext(
     "grid",
     topleftX2,
     leftPx2
-  );
+);
 
 grid.draw(ctx2);
+
+
+const topleftX3: number = OFFSET_CANVAS_X;
+const leftPx3: number = OFFSET_CANVAS_Y * 2 + CANVAS_H;
+
+
+const ctx3: CanvasRenderingContext2D = createCanvas2DContext(
+    "grid3",
+    topleftX3,
+    leftPx3
+);
+
+const grid3: Grid = new Grid();
+
+grid3.draw(ctx3);
+
+for (let i = 0; i < 100; i++) {
+    const index = 4 + i;
+    const ctx = createCanvas2DContext(
+        "grid" + index,
+        topleftX3,
+        leftPx3
+    );
+    grid3.draw(ctx);
+}
 
 function getXLineThickness(y: number): number {
   return getLineThickness(isMultipleOf(y, Y_MEDIUM_STEP));

@@ -1,5 +1,6 @@
 import { CANVAS_H, CANVAS_W } from "./draw";
 import { Drawable } from "./drawable";
+import { Line } from "./line";
 import { Point } from "./point";
 import { StrokeStyle, STROKE_STYLE_DEFAULT } from "./stroke-style";
 import { StyledLine } from "./styled-line";
@@ -13,7 +14,7 @@ export const DEFAULT_STEP: number = 10;
 export const DEFAULT_MAJOR_STEP_FACTOR = 5;
 
 export class Grid implements Drawable {
-  private lines: StyledLine[] = [];
+  private lines: Line[] = [];
 
   private width: number;
   private height: number;
@@ -33,6 +34,7 @@ export class Grid implements Drawable {
 
     this.minorStrokeStyle = dimension?.minorStrokeStyle || STROKE_STYLE_DEFAULT;
     this.majorStrokeStyle = dimension?.majorStrokeStyle || STROKE_STYLE_DEFAULT;
+
     this.step = dimension?.step || DEFAULT_STEP;
     const majorStepFactor =
       dimension?.majorStepFactor || DEFAULT_MAJOR_STEP_FACTOR;

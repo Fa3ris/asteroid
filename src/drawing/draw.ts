@@ -16,10 +16,20 @@ export function createCanvas2DContext(
   canvas.id = id;
   canvas.width = w;
   canvas.height = h;
-  const style = `position: absolute;left: ${topLeftX}px; top: ${topLeftY}px;`;
-  canvas.setAttribute("style", style);
+//   const style = `position: absolute;left: ${topLeftX}px; top: ${topLeftY}px;`;
+//   canvas.setAttribute("style", style);
 
-  document.body.appendChild(canvas);
+  
+
+  const div: HTMLDivElement = document.createElement("div");
+
+  div.appendChild(canvas);
+
+  const elements: HTMLCollectionOf<Element> = document.getElementsByClassName("flex-container");
+
+  elements[0].appendChild(div);
+
+//   document.body.appendChild(canvas);
 
   return canvas.getContext("2d") as CanvasRenderingContext2D;
 }
