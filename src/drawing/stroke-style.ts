@@ -5,7 +5,14 @@ export interface StrokeStyle {
   strokeWidth: number;
 }
 
+
+export const DEFAULT_STROKE_COLOR: COLOR = COLOR.WHITE;
+
+export const DEFAULT_STROKE_WIDTH: number = .5;
+
 export const STROKE_STYLE_DEFAULT: StrokeStyle = {
-  strokeColor: COLOR.WHITE,
-  strokeWidth: 0.5,
+  strokeColor: DEFAULT_STROKE_COLOR,
+  strokeWidth: DEFAULT_STROKE_WIDTH,
 };
+
+

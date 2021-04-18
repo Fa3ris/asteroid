@@ -4,45 +4,103 @@ import { Point } from "./point";
 import { StrokeStyle, STROKE_STYLE_DEFAULT } from "./stroke-style";
 import { StyledLine } from "./styled-line";
 
+export const DEFAULT_ORIGIN: Point = {
+  x: 0,
+  y: 0,
+};
+
+export const DEFAULT_STEP: number = 10;
+export const DEFAULT_MAJOR_STEP_FACTOR = 5;
+
 export class Grid implements Drawable {
   private lines: StyledLine[] = [];
 
+  private width: number;
+  private height: number;
+  private x0: number;
+  private y0: number;
+  private minorStrokeStyle: StrokeStyle;
+  private majorStrokeStyle: StrokeStyle;
+  private step: number;
+  private majorStep: number;
+
   constructor(dimension?: GridDimension) {
+    this.width = dimension?.width || CANVAS_W;
+    this.height = dimension?.height || CANVAS_H;
 
-    const width = dimension?.width || CANVAS_W;
-    const height = dimension?.height || CANVAS_H;
+    this.x0 = dimension?.origin?.x || DEFAULT_ORIGIN.x;
+    this.y0 = dimension?.origin?.y || DEFAULT_ORIGIN.y;
 
-    const x0 = dimension?.origin?.x || 0;
-    const y0 = dimension?.origin?.y || 0;
-    
-    const minorStrokeStyle = dimension?.minorStrokeStyle || STROKE_STYLE_DEFAULT;
-    const majorStrokeStyle = dimension?.majorStrokeStyle || STROKE_STYLE_DEFAULT;
-    const step = dimension?.step || 10;
-    const majorStepFactor = dimension?.majorStepFactor || 5;
-    const majorStep = step * majorStepFactor;
+    this.minorStrokeStyle = dimension?.minorStrokeStyle || STROKE_STYLE_DEFAULT;
+    this.majorStrokeStyle = dimension?.majorStrokeStyle || STROKE_STYLE_DEFAULT;
+    this.step = dimension?.step || DEFAULT_STEP;
+    const majorStepFactor =
+      dimension?.majorStepFactor || DEFAULT_MAJOR_STEP_FACTOR;
+    this.majorStep = this.step * majorStepFactor;
 
-    for (let x = x0; x < width; x += step) {
-      const start: Point = { x, y: y0 };
-      const end: Point = { x, y: height };
-
-      const style = (x % majorStep == 0) ? majorStrokeStyle : minorStrokeStyle;
-      const line: StyledLine = new StyledLine(start, end, style);
-      this.lines.push(line);
-    }
-
-    for (let y = y0; y < height; y += step) {
-      const start: Point = { x: x0, y };
-      const end: Point = { x: width, y };
-      const style = (y % majorStep == 0) ? majorStrokeStyle : minorStrokeStyle;
-      const line: StyledLine = new StyledLine(start, end, style);
-      this.lines.push(line);
-    }
+    this.createLines();
   }
 
   draw(ctx: CanvasRenderingContext2D): void {
     for (const line of this.lines) {
       line.draw(ctx);
     }
+  }
+
+  private createLines(): void {
+    this.lines = [];
+    this.createVerticalLines();
+    this.createHorizontalLines();
+  }
+
+  private createVerticalLines(): void {
+    for (let x = this.x0; x < this.width; x += this.step) {
+      this.lines.push(this.createVerticalLine(x));
+    }
+  }
+
+  private createVerticalLine(x: number): StyledLine {
+    return new StyledLine(
+      this.getStartVertical(x),
+      this.getEndVertical(x),
+      this.getStyle(x)
+    );
+  }
+
+  private getStartVertical(x: number): Point {
+    return { x, y: this.y0 };
+  }
+
+  private getEndVertical(x: number): Point {
+    return { x, y: this.height };
+  }
+
+  private createHorizontalLines(): void {
+    for (let y = this.y0; y < this.height; y += this.step) {
+      this.lines.push(this.createHorizontalLine(y));
+    }
+  }
+
+  private createHorizontalLine(y: number): StyledLine {
+    return new StyledLine(
+      this.getStartHorizontal(y),
+      this.getEndHorizontal(y),
+      this.getStyle(y)
+    );
+  }
+
+  private getStartHorizontal(y: number): Point {
+    return { x: this.x0, y };
+  }
+
+  private getEndHorizontal(y: number): Point {
+    return { x: this.width, y };
+  }
+
+  private getStyle(i: number): StrokeStyle {
+    return i % this.majorStep == 0
+      ? this.majorStrokeStyle
+      : this.minorStrokeStyle;
   }
 }
 
@@ -52,13 +110,13 @@ export class Grid implements Drawable {
 // };
 
 export interface GridDimension {
-  origin?: Point,
-  width?: number,
-  height?: number,
-  step?: number,
-  majorStepFactor?: number,
-  minorStrokeStyle?: StrokeStyle,
-  majorStrokeStyle?: StrokeStyle,
+  origin?: Point;
+  width?: number;
+  height?: number;
+  step?: number;
+  majorStepFactor?: number;
+  minorStrokeStyle?: StrokeStyle;
+  majorStrokeStyle?: StrokeStyle;
 }
 
 // interface GridConfigOptions {
