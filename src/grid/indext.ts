@@ -94,7 +94,7 @@ const grid3: Grid = new Grid();
 
 grid3.draw(ctx3);
 
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 15; i++) {
     const index = 4 + i;
     const ctx = createCanvas2DContext(
         "grid" + index,
