@@ -1,24 +1,40 @@
 import { CANVAS_H, CANVAS_W } from "./draw";
 import { Drawable } from "./drawable";
 import { Point } from "./point";
+import { StrokeStyle, STROKE_STYLE_DEFAULT } from "./stroke-style";
 import { StyledLine } from "./styled-line";
 
 export class Grid implements Drawable {
   private lines: StyledLine[] = [];
 
-  constructor() {
-    for (let x = 0; x < CANVAS_W; x += 10) {
-      const start: Point = { x, y: 0 };
-      const end: Point = { x, y: CANVAS_H };
+  constructor(dimension?: GridDimension) {
 
-      const line: StyledLine = new StyledLine(start, end);
+    const width = dimension?.width || CANVAS_W;
+    const height = dimension?.height || CANVAS_H;
+
+    const x0 = dimension?.origin?.x || 0;
+    const y0 = dimension?.origin?.y || 0;
+    
+    const minorStrokeStyle = dimension?.minorStrokeStyle || STROKE_STYLE_DEFAULT;
+    const majorStrokeStyle = dimension?.majorStrokeStyle || STROKE_STYLE_DEFAULT;
+    const step = dimension?.step || 10;
+    const majorStepFactor = dimension?.majorStepFactor || 5;
+    const majorStep = step * majorStepFactor;
+
+    for (let x = x0; x < width; x += step) {
+      const start: Point = { x, y: y0 };
+      const end: Point = { x, y: height };
+
+      const style = (x % majorStep == 0) ? majorStrokeStyle : minorStrokeStyle;
+      const line: StyledLine = new StyledLine(start, end, style);
       this.lines.push(line);
     }
 
-    for (let y = 0; y < CANVAS_H; y += 10) {
-      const start: Point = { x: 0, y };
-      const end: Point = { x: CANVAS_W, y };
-      const line: StyledLine = new StyledLine(start, end);
+    for (let y = y0; y < height; y += step) {
+      const start: Point = { x: x0, y };
+      const end: Point = { x: width, y };
+      const style = (y % majorStep == 0) ? majorStrokeStyle : minorStrokeStyle;
+      const line: StyledLine = new StyledLine(start, end, style);
       this.lines.push(line);
     }
   }
@@ -35,10 +51,15 @@ export class Grid implements Drawable {
 //   width: 0.5,
 // };
 
-// interface GridDimension {
-//   width: number;
-//   height: number;
-// }
+export interface GridDimension {
+  origin?: Point,
+  width?: number,
+  height?: number,
+  step?: number,
+  majorStepFactor?: number,
+  minorStrokeStyle?: StrokeStyle,
+  majorStrokeStyle?: StrokeStyle,
+}
 
 // interface GridConfigOptions {
 //   x: AxisConfig;

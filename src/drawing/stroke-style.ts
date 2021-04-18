@@ -1,6 +1,5 @@
 import { COLOR } from "./color";
 
-
 export interface StrokeStyle {
   strokeColor: COLOR;
   strokeWidth: number;

@@ -6,7 +6,7 @@ import {
   OFFSET_CANVAS_X,
   OFFSET_CANVAS_Y,
 } from "../drawing/draw";
-import { Grid } from "../drawing/grid";
+import { Grid, GridDimension } from "../drawing/grid";
 
 const topleftX: number = OFFSET_CANVAS_X * 2 + CANVAS_W;
 const leftPx: number = OFFSET_CANVAS_Y;
@@ -47,8 +47,25 @@ for (let y = 0; y < CANVAS_H; y += 10) {
   }
 }
 
+const dimension: GridDimension = {
+    width: 300,
+    height: 200,
+    origin: {
+        x: 10,
+        y: 20
+    },
+    step: 10,
+    minorStrokeStyle: {
+        strokeWidth: .25,
+        strokeColor: COLOR.GHOST_WHITE
+    },
+    majorStrokeStyle: {
+        strokeWidth: .75,
+        strokeColor: COLOR.RED
+    }
+}
 
-const grid: Grid = new Grid();
+const grid: Grid = new Grid(dimension);
 
 const topleftX2: number = OFFSET_CANVAS_X * 3 + CANVAS_W * 2;
 const leftPx2: number = OFFSET_CANVAS_Y;
