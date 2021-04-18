@@ -7,6 +7,7 @@ import {
   OFFSET_CANVAS_Y,
 } from "../drawing/draw";
 import { Grid, GridDimension } from "../drawing/grid";
+import { Pacman } from "../pacman/pacman";
 
 const topleftX: number = OFFSET_CANVAS_X * 2 + CANVAS_W;
 const leftPx: number = OFFSET_CANVAS_Y;
@@ -46,6 +47,10 @@ for (let y = 0; y < CANVAS_H; y += 10) {
     ctx.fillText(String(y), 0, y);
   }
 }
+
+const pacman: Pacman = new Pacman();
+
+pacman.draw(ctx);
 
 const dimension: GridDimension = {
     width: 300,
