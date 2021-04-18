@@ -1,3 +1,4 @@
+import { generateContexts } from "../context-generator/context-generator";
 import { COLOR } from "../drawing/color";
 import {
   CANVAS_H,
@@ -8,6 +9,7 @@ import {
 } from "../drawing/draw";
 import { Grid, GridDimension } from "../drawing/grid";
 import { Pacman } from "../pacman/pacman";
+import { Ship } from "../ship/ship";
 
 const topleftX: number = OFFSET_CANVAS_X * 2 + CANVAS_W;
 const leftPx: number = OFFSET_CANVAS_Y;
@@ -99,15 +101,22 @@ const grid3: Grid = new Grid();
 
 grid3.draw(ctx3);
 
-for (let i = 0; i < 15; i++) {
-    const index = 4 + i;
-    const ctx = createCanvas2DContext(
-        "grid" + index,
-        topleftX3,
-        leftPx3
-    );
-    grid3.draw(ctx);
+const CTX_COUNT = 12;
+const contexts: CanvasRenderingContext2D[] = generateContexts(CTX_COUNT);
+
+
+const ship = new Ship();
+
+ship.draw(contexts[0]);
+
+for (let index = 0; index < 100; index++) {
+    const ship = new Ship();
+    ship.draw(contexts[0]);
+    
 }
+// for (const ctx of contexts) {
+//     grid3.draw(ctx);
+// }
 
 function getXLineThickness(y: number): number {
   return getLineThickness(isMultipleOf(y, Y_MEDIUM_STEP));

@@ -30,7 +30,7 @@ export function generateContext(
 
 export function generateContexts(
   count: number,
-  ctxDimension: ContextDimension
+  ctxDimension?: ContextDimension
 ): CanvasRenderingContext2D[] {
   const ctx: CanvasRenderingContext2D[] = [];
   for (let index = 0; index < count; index++) {

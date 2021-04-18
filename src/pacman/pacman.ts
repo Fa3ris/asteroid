@@ -1,24 +1,11 @@
+import { BaseDrawable } from "../drawing/base-drawable";
 import { Drawable } from "../drawing/drawable";
 import { Point } from "../drawing/point";
 
-export class Pacman implements Drawable {
-  private _open: number;
+export class Pacman extends BaseDrawable {
+  protected setStyle(ctx: CanvasRenderingContext2D): void {}
 
-  private openState: OpenState;
-  get open(): number {
-    return this._open;
-  }
-
-  set open(open: number) {
-    this._open = open;
-  }
-
-  constructor() {
-    this._open = 0;
-    this.openState = new Opener();
-  }
-
-  draw(ctx: CanvasRenderingContext2D): void {
+  protected drawInternal(ctx: CanvasRenderingContext2D): void {
     const origin: Point = { x: 200, y: 200 };
 
     const radius: number = 150;
@@ -46,6 +33,23 @@ export class Pacman implements Drawable {
       ctx.fill();
     }, 200);
   }
+  private _open: number;
+
+  private openState: OpenState;
+  get open(): number {
+    return this._open;
+  }
+
+  set open(open: number) {
+    this._open = open;
+  }
+
+  constructor() {
+    super();
+    this._open = 0;
+    this.openState = new Opener();
+  }
+
 }
 
 interface OpenState {
