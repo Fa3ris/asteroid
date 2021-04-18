@@ -1,11 +1,12 @@
+import { COLOR } from "../drawing/color";
 import {
   CANVAS_H,
   CANVAS_W,
-  COLOR,
   createCanvas2DContext,
   OFFSET_CANVAS_X,
   OFFSET_CANVAS_Y,
 } from "../drawing/draw";
+import { Grid } from "../drawing/grid";
 
 const topleftX: number = OFFSET_CANVAS_X * 2 + CANVAS_W;
 const leftPx: number = OFFSET_CANVAS_Y;
@@ -45,6 +46,21 @@ for (let y = 0; y < CANVAS_H; y += 10) {
     ctx.fillText(String(y), 0, y);
   }
 }
+
+
+const grid: Grid = new Grid();
+
+const topleftX2: number = OFFSET_CANVAS_X * 3 + CANVAS_W * 2;
+const leftPx2: number = OFFSET_CANVAS_Y;
+
+
+const ctx2: CanvasRenderingContext2D = createCanvas2DContext(
+    "grid",
+    topleftX2,
+    leftPx2
+  );
+
+grid.draw(ctx2);
 
 function getXLineThickness(y: number): number {
   return getLineThickness(isMultipleOf(y, Y_MEDIUM_STEP));

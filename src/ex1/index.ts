@@ -1,4 +1,5 @@
-import { COLOR, createCanvas2DContext, drawRect, drawStickFigure, drawText, OFFSET_CANVAS_X, OFFSET_CANVAS_Y } from "../drawing/draw";
+import { COLOR } from "../drawing/color";
+import {  createCanvas2DContext, drawRect, drawStickFigure, drawText, OFFSET_CANVAS_X, OFFSET_CANVAS_Y } from "../drawing/draw";
 
 const topleftX: number = OFFSET_CANVAS_X;
 const leftPx: number = OFFSET_CANVAS_Y;
