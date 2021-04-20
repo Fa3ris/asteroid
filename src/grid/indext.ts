@@ -1,3 +1,4 @@
+import { Asteroid } from "../asteroid/asteroid";
 import { generateContexts } from "../context-generator/context-generator";
 import { COLOR } from "../drawing/color";
 import {
@@ -114,9 +115,10 @@ for (let index = 0; index < 100; index++) {
     ship.draw(contexts[0]);
     
 }
-// for (const ctx of contexts) {
-//     grid3.draw(ctx);
-// }
+
+const asteroid = new Asteroid();
+
+asteroid.draw(contexts[1])
 
 function getXLineThickness(y: number): number {
   return getLineThickness(isMultipleOf(y, Y_MEDIUM_STEP));
