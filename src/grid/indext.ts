@@ -9,6 +9,7 @@ import {
   OFFSET_CANVAS_Y,
 } from "../drawing/draw";
 import { Grid, GridDimension } from "../drawing/grid";
+import { Game1 } from "../game/game1";
 import { Pacman } from "../pacman/pacman";
 import { Ship } from "../ship/ship";
 
@@ -119,6 +120,9 @@ for (let index = 0; index < 100; index++) {
 const asteroid = new Asteroid();
 
 asteroid.draw(contexts[1])
+
+// const game1 = new Game1(contexts[2]);
+
 
 function getXLineThickness(y: number): number {
   return getLineThickness(isMultipleOf(y, Y_MEDIUM_STEP));
