@@ -10,7 +10,12 @@ export class StyledLine extends Line {
     this.style = style || STROKE_STYLE_DEFAULT;
   }
 
-  protected setStyle(ctx: CanvasRenderingContext2D): void {
+  protected drawInternal(ctx: CanvasRenderingContext2D): void {
+    this.setStyle(ctx);
+    super.drawInternal(ctx);
+  }
+
+  private  setStyle(ctx: CanvasRenderingContext2D): void {
     ctx.lineWidth = this.style.strokeWidth;
     ctx.strokeStyle = this.style.strokeColor;
   }

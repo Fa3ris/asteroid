@@ -3,7 +3,7 @@ import { Drawable } from "../drawing/drawable";
 import { Point } from "../drawing/point";
 
 export class Pacman extends BaseDrawable {
-  protected setStyle(ctx: CanvasRenderingContext2D): void {}
+  // protected setStyle(ctx: CanvasRenderingContext2D): void {}
 
   protected drawInternal(ctx: CanvasRenderingContext2D): void {
     const origin: Point = { x: 200, y: 200 };

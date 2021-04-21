@@ -15,12 +15,13 @@ export class Asteroid extends BaseDrawable {
         this.position = {x: 200, y: 200}
         this.segments = 15;
     }
-    protected setStyle(ctx: CanvasRenderingContext2D): void {
+    private setStyle(ctx: CanvasRenderingContext2D): void {
         ctx.strokeStyle = COLOR.WHITE;
     }
 
 
     protected drawInternal(ctx: CanvasRenderingContext2D): void {
+        this.setStyle(ctx);
         ctx.translate(this.position.x, this.position.y);
         ctx.beginPath();
         // ctx.moveTo(this.radius + this.radius * .4 * (Math.random() - .5), 0);

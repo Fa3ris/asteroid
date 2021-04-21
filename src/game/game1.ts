@@ -48,19 +48,20 @@ class Rect extends BaseDrawable {
         this.h = 20;
 
         this.ySpeed = .2;
-        this.xSpeed = 2;
+        this.xSpeed = -2;
     }
-    protected setStyle(ctx: CanvasRenderingContext2D): void {
+    private setStyle(ctx: CanvasRenderingContext2D): void {
         ctx.strokeStyle = COLOR.RED;
         ctx.lineWidth = 5;
         ctx.fillStyle = COLOR.WHITE
     }
 
     protected drawInternal(ctx: CanvasRenderingContext2D): void {
+        this.setStyle(ctx);
         ctx.beginPath();
-    ctx.rect(this.x, this.y, this.w, this.h);
-    ctx.stroke();
-    ctx.fill();
+        ctx.rect(this.x, this.y, this.w, this.h);
+        ctx.stroke();
+        ctx.fill();
     }
 
     public update(ctx: CanvasRenderingContext2D) {
@@ -77,7 +78,7 @@ class Rect extends BaseDrawable {
             this.y = 0;
             this.ySpeed *= -1
         }
-        if (this.x <= 0 || this.x >= ctx.canvas.width) {
+        if (this.x + this.w <= 0 || this.x >= ctx.canvas.width) {
             this.x = (this.x + ctx.canvas.width) % ctx.canvas.width;
         }
 

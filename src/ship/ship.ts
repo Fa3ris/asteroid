@@ -2,7 +2,7 @@ import { BaseDrawable } from "../drawing/base-drawable";
 import { Point } from "../drawing/point";
 
 export class Ship extends BaseDrawable {
-  protected setStyle(ctx: CanvasRenderingContext2D): void {}
+  // private setStyle(ctx: CanvasRenderingContext2D): void {}
 
   private origin: Point;
   private radius: number;
@@ -11,6 +11,7 @@ export class Ship extends BaseDrawable {
   private xFactor: number;
   private yFactor: number;
   private step: number
+
   constructor() {
     super();
     this.origin = { x: 200, y: 200 };
@@ -24,6 +25,8 @@ export class Ship extends BaseDrawable {
 
   protected drawInternal(ctx: CanvasRenderingContext2D): void {
     setInterval(() => {
+
+      // this.setStyle(ctx);
       ctx.clearRect(
         this.origin.x - this.radius,
         this.origin.y - this.radius,
