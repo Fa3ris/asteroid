@@ -121,7 +121,7 @@ const asteroid = new Asteroid();
 
 asteroid.draw(contexts[1])
 
-// const game1 = new Game1(contexts[2]);
+const game1 = new Game1(contexts[2]);
 
 
 function getXLineThickness(y: number): number {

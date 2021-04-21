@@ -9,16 +9,16 @@ export class Game1 {
     constructor(ctx: CanvasRenderingContext2D) {
         this.ctx = ctx;
         this.rect = new Rect();
-        this.frame();
+        window.requestAnimationFrame((time: number) => this.frame(time));
     }
 
-    frame() {
+    frame(time: number): void {
 
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         
         this.update();
         this.draw();
-        setInterval(() => this.frame(), 1000.0 / 60.0);
+        window.requestAnimationFrame((time: number) => this.frame(time));
     }
 
     update() {
@@ -44,20 +44,23 @@ class Rect extends BaseDrawable {
         super();
         this.x = 40;
         this.y = 40;
-        this.w = 10;
-        this.h = 10;
+        this.w = 20;
+        this.h = 20;
 
-        this.ySpeed = .02;
-        this.xSpeed = .02;
+        this.ySpeed = .2;
+        this.xSpeed = 2;
     }
     protected setStyle(ctx: CanvasRenderingContext2D): void {
         ctx.strokeStyle = COLOR.RED;
+        ctx.lineWidth = 5;
+        ctx.fillStyle = COLOR.WHITE
     }
 
     protected drawInternal(ctx: CanvasRenderingContext2D): void {
         ctx.beginPath();
     ctx.rect(this.x, this.y, this.w, this.h);
     ctx.stroke();
+    ctx.fill();
     }
 
     public update(ctx: CanvasRenderingContext2D) {
