@@ -69,10 +69,10 @@ function getRandomIntInclusive(min: number, max: number) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min +1)) + min;
-  }
+}
 
 // On renvoie un nombre aléatoire entre une valeur min (incluse)
 // et une valeur max (exclue)
 function getRandomArbitrary(min: number, max: number): number {
     return Math.random() * (max - min) + min;
-  }
+}

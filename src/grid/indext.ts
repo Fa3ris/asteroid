@@ -11,6 +11,7 @@ import {
 import { Grid, GridDimension } from "../drawing/grid";
 import { Game1 } from "../game/game1";
 import { Game2 } from "../game/game2";
+import { Game3 } from "../game/game3";
 import { Pacman } from "../pacman/pacman";
 import { Ship } from "../ship/ship";
 
@@ -125,6 +126,8 @@ asteroid.draw(contexts[1])
 new Game1(contexts[2]);
 
 new Game2(contexts[3]);
+
+new Game3(contexts[4]);
 
 
 function getXLineThickness(y: number): number {
