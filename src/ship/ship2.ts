@@ -1,6 +1,7 @@
 import random from "random";
 import { Drawable } from "../drawing/drawable";
 import { DrawableShip } from "../drawing/drawable-ship";
+import { ShipInput } from "../input/ship-input";
 import { Mass } from "../mass/mass";
 import { ContextUpdatable } from "../update/context-updatable";
 
@@ -8,6 +9,7 @@ export class Ship2 implements Drawable, ContextUpdatable {
 
   private drawable: DrawableShip;
   private mass: Mass;
+  private shipInput: ShipInput = new ShipInput();
   
   constructor() {
 
@@ -19,15 +21,27 @@ export class Ship2 implements Drawable, ContextUpdatable {
     this.mass = new Mass(
       m,
       { x: random.int(50, 350), y: random.int(50, 350) },
-      { x: random.int(-5, 5), y: random.int(-5, 5) },
+      { x: 0, y: 0 },
       r,
       0,
-      random.float(-2 * Math.PI / 3, 2 * Math.PI / 3)
+      0
+      // random.float(-2 * Math.PI / 3, 2 * Math.PI / 3)
     );
 
   }
 
   update(ctx: CanvasRenderingContext2D, elapsed: number): void {
+
+    this.shipInput.update(this.mass, elapsed);
+    // if (random.bernoulli(.05)()) {
+    //   this.mass.push(this.mass.$theta, 3000, elapsed)
+    // }
+
+    // if (random.bernoulli(.05)()) {
+    //   const force = random.float(0, 2*Math.PI) * 10 * (random.boolean() ? 1 : -1)
+    //   this.mass.twist(force, elapsed)
+    // }
+
     this.mass.update(ctx, elapsed);
   }
 
