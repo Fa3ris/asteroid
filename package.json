@@ -11,7 +11,9 @@
     "start": "parcel src/index.html",
     "build-prod": "parcel build src/index.html"
   },
-  "dependencies": {},
+  "dependencies": {
+    "random": "^3.0.6"
+  },
   "devDependencies": {
     "parcel-bundler": "^1.12.5",
     "sass": "^1.32.10",

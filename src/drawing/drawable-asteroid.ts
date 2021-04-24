@@ -1,19 +1,24 @@
-import { DrawableMass } from "./drawable-mass";
+import { DrawableMass, DrawInfo } from "./drawable-mass";
 
 export class DrawableAsteroid extends DrawableMass {
 
-    private r: number;
+    private shapeVariations: number[];
 
-    constructor(r: number) {
+    constructor(shapeVariations: number[]) {
         super();
-        this.r = r;
+        this.shapeVariations = shapeVariations;
     }
 
     protected drawInternal(ctx: CanvasRenderingContext2D): void {
 
         ctx.beginPath();
-        ctx.arc(0, 0, this.r, 0, 2*Math.PI)
-        ctx.lineTo(0, 0);
+
+        for (const shape of this.shapeVariations) {
+            ctx.rotate(2*Math.PI / this.shapeVariations.length);
+            ctx.lineTo(shape, 0);
+        }
+        ctx.closePath();
+        // ctx.lineTo(0, 0);
         ctx.strokeStyle = "white"
         ctx.stroke();
     }
