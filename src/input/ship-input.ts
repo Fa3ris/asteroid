@@ -18,6 +18,16 @@ export class ShipInput implements EventListenerObject {
   }
 
   public handleEvent(evt: Event): void {
+    if (
+      evt instanceof KeyboardEvent &&
+      (evt.type === "keydown" || evt.type === "keyup")
+    ) {
+      const keys = ["ArrowUp", "ArrowDown"];
+
+      if (keys.includes(evt.key)) {
+        evt.preventDefault();
+      }
+    }
     this.steerState.handleEvent(evt);
     this.thrustState.handleEvent(evt);
   }
@@ -34,51 +44,70 @@ class Thrust implements State {
   private toggle: 0 | 1 = 0;
   private faceBack: 0 | 1 = 0;
 
+  private _thrust: State = new Still();
+
   updateMass(mass: Mass, elapsed: number): void {
-    // if (mass.speedNorm() >= 0 && this.faceBack == 1 && this.toggle == 1) { // cannot go backward
-    //     return
-    // }
-
-    if (mass.speedNorm() >= Thrust.THRUST && this.faceBack == 0 && this.toggle == 1) { // cannot exceed THRUST going forward
-        return
-    }
-
-    mass.push(
-      mass.$theta + this.faceBack * Math.PI,
-      this.toggle * Thrust.THRUST,
-      elapsed
-    );
+    this._thrust.updateMass(mass, elapsed);
   }
 
   handleEvent(evt: Event): State | void {
-    if (evt instanceof KeyboardEvent) {
-      if (evt.type === "keydown") {
-        if (evt.key === "ArrowUp") {
-          // forward
+    const newState = this._thrust.handleEvent(evt);
+    if (newState) {
+      this._thrust = newState;
+    }
+  }
+}
 
-          this.toggle = 1;
-          this.faceBack = 0;
-          evt.preventDefault();
-        } else if (evt.key === "ArrowDown") {
-          // brake
+class Forward implements State {
+  private static THRUST: number = 300;
 
-          this.toggle = 1;
-          this.faceBack = 1;
+  updateMass(mass: Mass, elapsed: number): void {
+    if (mass.speedNorm() <= Forward.THRUST) {
+      mass.push(mass.$theta, Forward.THRUST, elapsed);
+    }
+  }
 
-          evt.preventDefault();
-        }
-      } else if (evt.type === "keyup") {
-        // stop pushing
-        if (evt.key === "ArrowUp") {
-          this.toggle = 0;
-          //evt.preventDefault();
-        } else if (evt.key === "ArrowDown") {
-          this.toggle = 0;
-          //evt.preventDefault();
-        }
+  handleEvent(evt: Event): void | State {
+    if (
+      evt instanceof KeyboardEvent &&
+      evt.type === "keyup" &&
+      evt.key === "ArrowUp"
+    ) {
+      return new Still();
+    }
+  }
+}
+
+class Still implements State {
+  updateMass(mass: Mass, elapsed: number): void {}
+
+  handleEvent(evt: Event): void | State {
+    if (evt instanceof KeyboardEvent && evt.type === "keydown") {
+      if (evt.key === "ArrowUp") {
+        return new Forward();
+      }
+      if (evt.key === "ArrowDown") {
+        return new Brake();
       }
     }
+  }
+}
 
+class Brake implements State {
+  updateMass(mass: Mass, elapsed: number): void {
+    if (mass.$v.x > 0.0001 || mass.$v.y > 0.0001) {
+      mass.push(mass.$theta + Math.PI, 15, elapsed);
+    }
+  }
+
+  handleEvent(evt: Event): void | State {
+    if (
+      evt instanceof KeyboardEvent &&
+      evt.type === "keyup" &&
+      evt.key === "ArrowDown"
+    ) {
+      return new Still();
+    }
   }
 }
 
@@ -88,9 +117,13 @@ class Steer implements State {
     left: 0,
   };
 
+  private _steer: State = new SteerNeutral();
+
   private static STEERING: number = 15;
 
   updateMass(mass: Mass, elapsed: number): void {
+
+    this._steer.updateMass(mass, elapsed);
     mass.twist(
       (this.directions.right - this.directions.left) * Steer.STEERING,
       elapsed
@@ -98,18 +131,69 @@ class Steer implements State {
   }
 
   handleEvent(evt: Event): State | void {
+      const newSteer = this._steer.handleEvent(evt);
+      if (newSteer) {
+          this._steer = newSteer
+      }
+  }
+}
+
+class SteerLeft implements State {
+  updateMass(mass: Mass, elapsed: number): void {
+
+    if (mass.movementAngle() >= - Math.PI / 4) {
+
+        mass.twist(-15, elapsed);
+    }
+  }
+  handleEvent(evt: Event): void | State {
     if (evt instanceof KeyboardEvent)
       if (evt.type === "keydown") {
-        if (evt.key === "ArrowLeft") {
-          this.directions.left = 1;
-        } else if (evt.key === "ArrowRight") {
-          this.directions.right = 1;
+        if (evt.key === "ArrowRight") {
+          return new SteerRight();
         }
       } else if (evt.type === "keyup") {
         if (evt.key === "ArrowLeft") {
-          this.directions.left = 0;
+          return new SteerNeutral();
+        }
+      }
+    return;
+  }
+}
+
+class SteerNeutral implements State {
+  updateMass(mass: Mass, elapsed: number): void {}
+  handleEvent(evt: Event): void | State {
+    if (evt instanceof KeyboardEvent) {
+      if (evt.type === "keydown") {
+        if (evt.key === "ArrowLeft") {
+          return new SteerLeft();
         } else if (evt.key === "ArrowRight") {
-          this.directions.right = 0;
+          return new SteerRight();
+        }
+      }
+      return;
+    }
+  }
+}
+
+class SteerRight implements State {
+  updateMass(mass: Mass, elapsed: number): void {
+
+    if (mass.movementAngle() <=  Math.PI / 4) {
+     mass.twist(15, elapsed);
+    }
+  }
+
+  handleEvent(evt: Event): void | State {
+    if (evt instanceof KeyboardEvent)
+      if (evt.type === "keydown") {
+        if (evt.key === "ArrowLeft") {
+          return new SteerLeft();
+        }
+      } else if (evt.type === "keyup") {
+        if (evt.key === "ArrowRight") {
+          return new SteerNeutral();
         }
       }
     return;

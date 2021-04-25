@@ -9,8 +9,9 @@
         "moduleResolution": "node",
         "target": "es5",
         "allowJs": true,
+        "lib": ["DOM", "ES2016"]
     },
     "include": [
         "./src/**/*"
-    ]
+    ],
 }
