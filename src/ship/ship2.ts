@@ -1,8 +1,10 @@
 import random from "random";
 import { Drawable } from "../drawing/drawable";
 import { DrawableShip } from "../drawing/drawable-ship";
+import { Point, Vector } from "../drawing/point";
 import { ShipInput } from "../input/ship-input";
 import { Mass } from "../mass/mass";
+import { Projectile } from "../projectile/projectile";
 import { ContextUpdatable } from "../update/context-updatable";
 
 export class Ship2 implements Drawable, ContextUpdatable {
@@ -28,6 +30,20 @@ export class Ship2 implements Drawable, ContextUpdatable {
       // random.float(-2 * Math.PI / 3, 2 * Math.PI / 3)
     );
 
+  }
+
+  public projectile(): Projectile {
+    const pos: Point = {
+      x: this.mass.$pos.x + this.mass.$r * Math.cos(this.mass.$theta),
+      y: this.mass.$pos.y + this.mass.$r * Math.sin(this.mass.$theta) 
+    }
+
+    const v: Vector = {
+      x: 100 * Math.cos(this.mass.$theta),
+      y: 100 * Math.sin(this.mass.$theta)
+    }
+    
+    return new Projectile(pos, v)
   }
 
   update(ctx: CanvasRenderingContext2D, elapsed: number): void {

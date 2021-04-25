@@ -3,6 +3,7 @@ import { Mass } from "../mass/mass";
 export class ShipInput implements EventListenerObject {
   private steerState: State;
   private thrustState: State;
+  private trigger: EventListenerObject = new Trigger();
 
   constructor() {
     this.steerState = new Steer();
@@ -22,7 +23,7 @@ export class ShipInput implements EventListenerObject {
       evt instanceof KeyboardEvent &&
       (evt.type === "keydown" || evt.type === "keyup")
     ) {
-      const keys = ["ArrowUp", "ArrowDown"];
+      const keys = ["ArrowUp", "ArrowDown", " "];
 
       if (keys.includes(evt.key)) {
         evt.preventDefault();
@@ -30,6 +31,7 @@ export class ShipInput implements EventListenerObject {
     }
     this.steerState.handleEvent(evt);
     this.thrustState.handleEvent(evt);
+    this.trigger.handleEvent(evt)
   }
 }
 
@@ -38,11 +40,22 @@ interface State {
   handleEvent(evt: Event): State | void;
 }
 
-class Thrust implements State {
-  private static THRUST: number = 300;
 
-  private toggle: 0 | 1 = 0;
-  private faceBack: 0 | 1 = 0;
+class Trigger implements EventListenerObject {
+
+  handleEvent(evt: Event): void {
+    if (evt instanceof KeyboardEvent && evt.type === "keydown"
+    && evt.key === " ") {
+      
+      document.dispatchEvent(new CustomEvent("shoot",{}));
+    }
+
+  }
+
+
+}
+
+class Thrust implements State {
 
   private _thrust: State = new Still();
 
